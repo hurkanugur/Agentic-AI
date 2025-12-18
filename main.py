@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
+from langchain_ollama import ChatOllama
 import os
 
 
@@ -19,8 +20,15 @@ def main():
         template=template
     )
 
-    llm = ChatOpenAI(
-        model="llama-3.1-8b-instant",
+    #llm = ChatOpenAI(
+    #    model="llama-3.1-8b-instant",
+    #    temperature=0.7,
+    #    openai_api_key=os.getenv("OPENAI_API_KEY"),
+    #    openai_api_base="https://api.groq.com/openai/v1"
+    #)
+
+    llm = ChatOllama(
+        model="gemma3:270m",
         temperature=0.7,
         openai_api_key=os.getenv("OPENAI_API_KEY"),
         openai_api_base="https://api.groq.com/openai/v1"
