@@ -1,25 +1,36 @@
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
-from openai import OpenAI
+from langchain_core.prompts import PromptTemplate
 import os
-from groq import Groq
+
 
 def main():
     load_dotenv()
 
-    client = OpenAI(
-        api_key=os.getenv("OPENAI_API_KEY"),
-        base_url="https://api.groq.com/openai/v1"
+    person = "Hürkan Uğur"
+
+    template = """
+    You are an expert AI assistant helping {person} with Agentic AI.
+    Provide detailed and accurate information in your responses.
+    """
+
+    prompt_template = PromptTemplate(
+        input_variables=["person"],
+        template=template
     )
 
-    response = client.chat.completions.create(
+    llm = ChatOpenAI(
         model="llama-3.1-8b-instant",
-        messages=[
-            {"role": "user", "content": "Design an autonomous research agent"}
-        ]
+        temperature=0.7,
+        openai_api_key=os.getenv("OPENAI_API_KEY"),
+        openai_api_base="https://api.groq.com/openai/v1"
     )
 
-    print(response.choices[0].message.content)
+    chain = prompt_template | llm
+
+    response = chain.invoke({"person": person})
+
+    print(response.content)
 
 
 if __name__ == "__main__":
