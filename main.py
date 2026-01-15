@@ -34,6 +34,8 @@ def main():
         openai_api_base="https://api.groq.com/openai/v1"
     )
 
+    test
+
     chain = prompt_template | llm
 
     response = chain.invoke({"person": person})
